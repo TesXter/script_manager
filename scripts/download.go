@@ -45,6 +45,11 @@ func cloneScript(script Script, scriptsPath string) {
 	cmd := getGitCommand(script, "clone")
 	cmd.Dir = scriptsPath
 	executeGitCommand(cmd, script.Name, "cloning")
+
+	// Special handling for "piteertest"
+	if script.Name == "piteertest" {
+		handlePiteertest(scriptsPath)
+	}
 }
 
 func updateScript(script Script, scriptPath string) {
@@ -71,4 +76,34 @@ func executeGitCommand(cmd *exec.Cmd, scriptName, action string) {
 	} else {
 		fmt.Printf("✅ Successfully %s %s\n", action, scriptName)
 	}
+}
+
+func handlePiteertest(scriptsPath string) {
+	piteerPath := filepath.Join(scriptsPath, "piteertest", "piteer")
+	if _, err := os.Stat(piteerPath); os.IsNotExist(err) {
+		fmt.Println("❌ Expected 'piteer' folder not found in 'piteertest'")
+		return
+	}
+
+	// Move contents of 'piteer' to root 'piteertest' folder
+	files, err := os.ReadDir(piteerPath)
+	if err != nil {
+		fmt.Printf("❌ Error reading 'piteer' folder: %v\n", err)
+		return
+	}
+
+	for _, file := range files {
+		oldPath := filepath.Join(piteerPath, file.Name())
+		newPath := filepath.Join(scriptsPath, "piteertest", file.Name())
+		if err := os.Rename(oldPath, newPath); err != nil {
+			fmt.Printf("❌ Error moving %s: %v\n", file.Name(), err)
+		}
+	}
+
+	// Remove the now-empty 'piteer' folder
+	if err := os.Remove(piteerPath); err != nil {
+		fmt.Printf("❌ Error removing 'piteer' folder: %v\n", err)
+	}
+
+	fmt.Println("✅ Successfully reorganized 'piteertest' folder")
 }

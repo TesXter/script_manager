@@ -20,15 +20,15 @@
     "Link": "https://github.com/icemancsa/HelltideChests_MaidenFarmerEXPERIMENTALV2.2.git"
   },
   {
-    "Name": "LooteerV2",
-    "Link": "https://github.com/drorhod1/LooteerV2.git"
-  },
-  {
     "Name": "Kafalurs-Auto-Consumables",
     "Link": "https://github.com/TesXter/Kafalurs-Auto-Consumables.git"
   },
   {
     "Name": "RotationSpiritborn_Dirty",
     "Link": "https://github.com/Dirty-git/RotationSpiritborn_Dirty.git"
+  },
+  {
+    "Name": "LooteerV2",
+    "Link": "https://github.com/Letrico/LooteerV2.git"
   }
 ]
