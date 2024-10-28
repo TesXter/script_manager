@@ -40,15 +40,15 @@ func printAvailableScripts() {
 	}
 }
 
-func cloneScript(script Script, scriptsPath string) {
+func cloneScript(script Script, scriptPath string) {
 	fmt.Printf("🔄 Cloning %s...\n", script.Name)
 	cmd := getGitCommand(script, "clone")
-	cmd.Dir = scriptsPath
+	cmd.Dir = scriptPath
 	executeGitCommand(cmd, script.Name, "cloning")
 
 	// Special handling for "piteertest"
 	if script.Name == "piteertest" {
-		handlePiteertest(scriptsPath)
+		handlePiteertest(scriptPath, false)
 	}
 }
 
@@ -61,6 +61,11 @@ func updateScript(script Script, scriptPath string) {
 	cmd := getGitCommand(script, "clone")
 	cmd.Dir = filepath.Dir(scriptPath)
 	executeGitCommand(cmd, script.Name, "updating")
+
+	// Special handling for "piteertest"
+	if script.Name == "piteertest" {
+		handlePiteertest(scriptPath, true)
+	}
 }
 
 func getGitCommand(script Script, action string) *exec.Cmd {
@@ -78,8 +83,11 @@ func executeGitCommand(cmd *exec.Cmd, scriptName, action string) {
 	}
 }
 
-func handlePiteertest(scriptsPath string) {
+func handlePiteertest(scriptsPath string, isUpdate bool) {
 	piteerPath := filepath.Join(scriptsPath, "piteertest", "piteer")
+	if isUpdate {
+		piteerPath = filepath.Join(scriptsPath, "piteer")
+	}
 	if _, err := os.Stat(piteerPath); os.IsNotExist(err) {
 		fmt.Println("❌ Expected 'piteer' folder not found in 'piteertest'")
 		return
@@ -95,6 +103,9 @@ func handlePiteertest(scriptsPath string) {
 	for _, file := range files {
 		oldPath := filepath.Join(piteerPath, file.Name())
 		newPath := filepath.Join(scriptsPath, "piteertest", file.Name())
+		if isUpdate {
+			newPath = filepath.Join(scriptsPath, file.Name())
+		}
 		if err := os.Rename(oldPath, newPath); err != nil {
 			fmt.Printf("❌ Error moving %s: %v\n", file.Name(), err)
 		}
