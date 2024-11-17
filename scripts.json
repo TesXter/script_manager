@@ -24,15 +24,19 @@
     "Link": "https://github.com/Letrico/LooteerV2.git"
   },
   {
-    "Name": "Kafalurs-Auto-Consumables",
-    "Link": "https://github.com/TesXter/Kafalurs-Auto-Consumables.git"
-  },
-  {
     "Name": "RotationSpiritborn_Dirty",
     "Link": "https://github.com/Dirty-git/RotationSpiritborn_Dirty.git"
   },
   {
     "Name": "Undercity",
     "Link": "https://github.com/TesXter/Undercity.git"
+  },
+  {
+    "Name": "Kafalurs-Auto-Consumables",
+    "Link": "https://github.com/Kafalur/Kafalurs-Auto-Consumables.git"
+  },
+  {
+    "Name": "AlfredTheButler",
+    "Link": "https://github.com/Leoc76101111/AlfredTheButler.git"
   }
 ]
